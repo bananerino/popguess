@@ -4,26 +4,25 @@ const axios = require("axios")
 const query = `SELECT%20%3Fcity%20%3FcityLabel%20%3Fpopulation%20%3FcountryLabel%20%3Fphoto%0AWHERE%20%7B%0A%20%20%3Fcity%20wdt%3AP31%20wd%3AQ1637706%20.%0A%20%20%3Fcity%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcity%20wdt%3AP17%20%3Fcountry%20.%0A%20%20%3Fcity%20wdt%3AP18%20%3Fphoto%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20"en"%20%7D.%0A%20%20%20%20%20%20%20%20%7D`
 
 
-const getCities = (rawData) => {
-    const cities = []
+const getCountries = (rawData) => {
+    const countries = []
 
     for (let i = 0; i < 20; i++) {
-        let rawCity = rawData[getRandom()]
+        let rawCountry = rawData[getRandom()]
+        console.log(rawCountry)
+        const newCountry = {
 
-        const newCity = {
-
-            name: rawCity.cityLabel.value,
-            country: rawCity.countryLabel.value,
-            image: rawCity.photo.value,
-            population: rawCity.population.value,
-            dropped : false,
+            name: rawCountry.countryLabel.value,
+            
+            flag: rawCountry.flag.value,
+            population: rawCountry.population.value,
             id : nanoid()
 
         }
-        cities.push(newCity)
+        countries.push(newCountry)
     }
 
-return cities
+return countries
 }
 
 // const getCities = (rawData) => {
@@ -55,9 +54,9 @@ return cities
 
 function getRandom() {
 
-    const random = Math.ceil(Math.random() * 663)
+    const random = Math.ceil(Math.random() * 188)
     return random
 }
 
 
-export default getCities;
+export default getCountries;

@@ -5,7 +5,7 @@ import {useDrag} from "react-dnd";
 
 export default function Card(props) {
 
-    const { id , name , country , image } = props
+    const { id , name , flag , population } = props
 
     
 
@@ -23,11 +23,12 @@ export default function Card(props) {
         <div className="row">
             <div className="col-sm-6">
             <div className="card" id={id} >
-                <img src={image} className="card-img-top" />
+                <img src={flag} className="card-img-top" />
                 
                     <div className="card-body">
                         <h5 className="card-title">{name}</h5>
-                        <p className="card-text">{country}</p>
+                        
+                        <p className="card-text">{population}</p>
 
                     </div>
             </div>
