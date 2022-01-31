@@ -1,7 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { DragDropContext, Droppable , Draggable } from "react-beautiful-dnd";
 
@@ -13,9 +11,9 @@ import './App.css';
 import getCountries from "./utils/Data.js"
 import checkPopulation from "./utils/checkPopulation.js";
 
+import Game from "./components/Game.js";
 
 
-// const query = `SELECT%20%3Fcountry%20%3FcountryLabel%20%3Fpopulation%20%3FcountryLabel%20%3Fphoto%0AWHERE%20%7B%0A%20%20%3Fcountry%20wdt%3AP31%20wd%3AQ1637706%20.%0A%20%20%3Fcountry%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcountry%20wdt%3AP17%20%3Fcountry%20.%0A%20%20%3Fcountry%20wdt%3AP18%20%3Fphoto%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20"en"%20%7D.%0A%20%20%20%20%20%20%20%20%7D`
 
 const query = `select%20%3Fcountry%20%3FcountryLabel%20%3Fpopulation%20%3Fflag%0AWHERE%7B%0A%20%20%3Fcountry%20wdt%3AP31%20wd%3AQ6256%20.%0A%20%20%3Fcountry%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcountry%20wdt%3AP41%20%3Fflag%20.%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%0A%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22en%22%20.%0A%20%20%20%20%7D%0A%7D`
 
@@ -25,11 +23,13 @@ function App() {
     name: "",
     flag: "",
     population: 0,
-    id: ""
+    id: "",
+    correctGuess: ""
 
   }])
-
   const [answers , setAnswers ] = React.useState([])
+
+  const [lives , setLives ] = React.useState(2)
 
   React.useEffect(() => {
     axios.get(`https://query.wikidata.org/sparql?query=${query}`)
@@ -45,18 +45,28 @@ function handleOnDragEnd(result){
   const draggedCountry = countries.find(country => country.id === result.source.droppableId)
   const newCountries = countries.filter(country => country.id !== result.source.droppableId)
   const newAnswers = answers;
-  
-  checkPopulation(draggedCountry.population,result.destination.index,answers)
-  
+  const target = result.destination.index;
+  if(!checkPopulation(draggedCountry.population,target,answers)){
+    setLives(lives-1)
+    draggedCountry.correctGuess = false;
+   
+  }
   setAnswers(newAnswers)
   setCountries(newCountries)
   newAnswers.splice(result.destination.index,0,draggedCountry)
+  newAnswers.sort(function(a , b){
+    return a.population - b.population
+  })
+  
 }
 
 
   return (
+    <div>
+    <h1>{lives}</h1>
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      
+
+      <div id="top--card--container">
       <Droppable  droppableId={countries[0].id}>
         {/* <Card name={countries[0].name} country={countries[0].country} image={countries[0].image} id={countries[0].id}/> */}
 
@@ -74,7 +84,7 @@ function handleOnDragEnd(result){
                   key={countries[0].id}
                   id={countries[0].id}
                   flag={countries[0].flag}
-                  population={countries[0].population}
+                  
                   />
                 </div>
                 
@@ -88,18 +98,22 @@ function handleOnDragEnd(result){
         )
         }
       </Droppable>
+      </div>
       <hr></hr>
-      <Droppable  droppableId="answers">
+      <div id="answers--container">
+      <Droppable  droppableId="answers" direction="horizontal">
         
 
         {(provided) => (
-          <ul {...provided.droppableProps} ref={provided.innerRef}>
+         
+          <ul {...provided.droppableProps} ref={provided.innerRef} className="list-group list-group-horizontal">
             {answers.map((country,index) => {
               return(
                 <Draggable key={country.id} draggableId={`${country.id}asda`} index={index }>
                   {(provided) => {
                     return(
-                <li key={country.id} {...provided.draggableProps} {...provided.dragHandleProps}ref={provided.innerRef}>
+                <li key={country.id} {...provided.draggableProps} {...provided.dragHandleProps}ref={provided.innerRef} className="list-group-item">
+                  
                   <Card 
                   name={country.name} 
                   
@@ -107,7 +121,10 @@ function handleOnDragEnd(result){
                   id={country.id}
                   flag={country.flag}
                   population={country.population}
+                  correctGuess={country.correctGuess}
                   />
+                  
+                  
                 </li>
                 
                     )}
@@ -117,10 +134,13 @@ function handleOnDragEnd(result){
             })}
             {provided.placeholder}
         </ul>
+       
         )
         }
       </Droppable>
+      </div>
     </DragDropContext>
+    </div>
   );
 }
 

@@ -6,16 +6,16 @@ const query = `SELECT%20%3Fcity%20%3FcityLabel%20%3Fpopulation%20%3FcountryLabel
 
 const getCountries = (rawData) => {
     const countries = []
+   
 
-    for (let i = 0; i < 20; i++) {
-        let rawCountry = rawData[getRandom()]
-        console.log(rawCountry)
+    for (let i = 0; i < 12; i++) {
+        const rawCountry = rawData[getRandom()]
         const newCountry = {
 
             name: rawCountry.countryLabel.value,
             
             flag: rawCountry.flag.value,
-            population: rawCountry.population.value,
+            population: parseInt(rawCountry.population.value), 
             id : nanoid()
 
         }
@@ -25,36 +25,10 @@ const getCountries = (rawData) => {
 return countries
 }
 
-// const getCities = (rawData) => {
-
-//     const cities = []
-
-//     axios.get(`https://query.wikidata.org/sparql?query=${query}`)
-//         .then((res) => {
-//             const rawData = [...res.data.results.bindings]
-//             for (let i = 0; i < 20; i++) {
-//                 let rawCity = rawData[getRandom()]
-
-//                 const newCity = {
-
-//                     name: rawCity.cityLabel.value,
-//                     country: rawCity.countryLabel.value,
-//                     image: rawCity.photo.value,
-//                     population: rawCity.population.value
-
-//                 }
-//                 cities.push(newCity)
-//             }
-// })
-// console.log(cities)
-// return cities
-// }
-
-
 
 function getRandom() {
 
-    const random = Math.ceil(Math.random() * 188)
+    const random = Math.ceil(Math.random() * 187)
     return random
 }
 
