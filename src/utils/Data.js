@@ -6,25 +6,39 @@ const query = `SELECT%20%3Fcity%20%3FcityLabel%20%3Fpopulation%20%3FcountryLabel
 
 const getCountries = (rawData) => {
     const countries = []
-   
 
-    for (let i = 0; i < 12; i++) {
-        const rawCountry = rawData[getRandom()]
-        const newCountry = {
 
-            name: rawCountry.countryLabel.value,
-            
-            flag: rawCountry.flag.value,
-            population: parseInt(rawCountry.population.value), 
-            id : nanoid()
-
+    for (let i = 0; i < 42; i++) {
+        let duplicateCheck = true;
+        while(duplicateCheck){
+            const newCountry = createCountry(rawData)
+            duplicateCheck = checkDuplicate(newCountry,countries)
+            if(!duplicateCheck){
+                countries.push(newCountry)
+            }
         }
-        countries.push(newCountry)
+        
     }
 
-return countries
+    return countries
 }
+function checkDuplicate(country, countries) {
+    const isDuplicate = countries.some(c => country.name === c.name)
+    return isDuplicate
+}
+function createCountry(rawData){
+    const rawCountry = rawData[getRandom()]
+            const newCountry = {
 
+                name: rawCountry.countryLabel.value,
+
+                flag: rawCountry.flag.value,
+                population: parseInt(rawCountry.population.value),
+                id: nanoid()
+
+            }
+    return newCountry
+}
 
 function getRandom() {
 
