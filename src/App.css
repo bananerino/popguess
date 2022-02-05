@@ -4,30 +4,82 @@
 }
 #card--div{
   max-width: 150px;
-  height: 200px;
-  border: none;
-}
-#answers--container{
+  height:200px;
+  border-width: 0px;
+  display:flex;
+  align-items: center;
+  font-weight: bolder;
   
+}
+#top--card--div {
+  border: 2px dashed #FFFFFF;
+}
+
+#answers--container{
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   height: 200px;
   flex-wrap: wrap;
-  border:none;
+  border:none; 
+  background-color:#272a32;
+  align-items : center;
 }
+#header--container{
+  display:flex;
+  justify-content:space-between;
+  height: 100px;
+  align-items: center;
+}
+
 #top--card--container{
   display:flex;
   justify-content: center;
+  color:#272a32;
+  
+}
+#footer--container{
+  
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom : 0;
+  left: 0;
+  right: 0;
+  margin-bottom : 40px;
+}
+#score--game{
+  padding-left:50px;
+}
+.footer--element{
+  padding: 10px;
+}
+
+#hearts{
+  
+  padding-right: 50px;
+  margin-right: 50px;
+  margin-top:20px;
 }
 html{
-  background-color: #bbe4e9;
+  background-color: #272a32;
 }
 ul{
   border:none;
   padding: 0px;
 }
+.heart{
+  display:inline;
+}
+
 .initial--screen{
   
+  height: 100%;
+  width:100%;
+  margin-left : 250px;
+  margin-top: 150px;
+}
+#gameover--screen{
   height: 100%;
   width:100%;
   margin-left : 250px;
@@ -37,13 +89,18 @@ ul{
 .initial--h1 {
   margin-bottom: 50px;
 }
+li{
+  background-color: #272a32;
+}
 body{
-  background-color: #bbe4e9;
+  background-color: #272a32;
   height: 100%;
   width:100%;
+  color: #ffffff;
 }
 main{
-  background-color: #bbe4e9;
+  background-color: #272a32;
+  color: #ffffff;
 }
 
 

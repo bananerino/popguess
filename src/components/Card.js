@@ -4,30 +4,30 @@ export default function Card(props) {
 
     const { id, name, flag, population, correctGuess } = props
 
-    let color
+    // let color
 
-    if (correctGuess) {
-        color = "#52bf90"
-    }
-    if (correctGuess === false) {
-        color = "#fe5757"
-    }
+    // if (correctGuess) {
+    //     color = "#52bf90"
+    // }
+    // if (correctGuess === false) {
+    //     color = "#fe5757"
+    // }
 
     return (
         <div id="card--div">
 
-            <div className="card rounded h-100" id={id} >
+            <div className="card m-0 border-0 rounded bg-transparent font-weight-bold mh-100" id={id} >
                 
-                    <img src={flag} className="card-img-top h-45" />
-                    <div style={{backgroundColor : color}}>
-                    <div className="card-body">
-                        <h5 className="card-title" >{name}</h5>
-
-                        {/* {renderPopulation} */}
-                        {correctGuess && <p className="card-text">{population}</p>}
-                        {correctGuess === false && <p className="card-text">{population}</p>}
+                    <img src={flag} className="card-img-top" id="card--image"/>
+                    
+                    <div className="card-body bg-white p-2">
+                        <h5 className="card-title  mb-0 align-middle text-center" >{name}</h5>
                     </div>
-                </div>
+                        
+                        {correctGuess && <p className="card-footer bg-success text-white text-center m-0 p-1 ">{population}</p>}
+                        {correctGuess === false && <p className="card-footer bg-danger text-white text-center m-0 p-1">{population}</p>}
+                    
+                
             </div>
         </div>
 
