@@ -14,7 +14,7 @@ function App() {
     <main>
       
       {!isPlaying && <div className="initial--screen">
-        <h1 className="initial--h1">Welcome to GAME</h1>
+        <h1 className="initial--h1">Welcome to Popsort</h1>
         <p className="description--p">The goal of the game is to sort the countries in an ascending order
           based on their respective population
         </p>

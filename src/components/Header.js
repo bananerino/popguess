@@ -16,13 +16,4 @@ export default function Header(props){
 
     )
 }
-function renderHearts(lives){
-    const hearts = [];
-    for(let i=0;i<lives;i++){
-        
-            hearts.push(<h2>{"\u2764"}</h2>)
-        
-    }
-    return hearts;
-}
 
