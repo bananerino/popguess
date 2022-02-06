@@ -3,6 +3,7 @@ import React from "react";
 import './App.css';
 
 import Game from "./components/Game.js";
+import Footer from "./components/Footer.js";
 
 
 
@@ -18,10 +19,11 @@ function App() {
           based on their respective population
         </p>
         <button onClick={() => setIsplaying(true)} className="start--button"> Start game </button>
+        
         </div>}
 
       {isPlaying && <Game />}
-      
+      <Footer />
     </main>
 
   )

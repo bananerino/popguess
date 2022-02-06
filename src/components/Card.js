@@ -4,15 +4,6 @@ export default function Card(props) {
 
     const { id, name, flag, population, correctGuess } = props
 
-    // let color
-
-    // if (correctGuess) {
-    //     color = "#52bf90"
-    // }
-    // if (correctGuess === false) {
-    //     color = "#fe5757"
-    // }
-
     return (
         <div id="card--div">
 

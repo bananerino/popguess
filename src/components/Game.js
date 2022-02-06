@@ -7,7 +7,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Card from "./Card.js";
 import Header from "./Header.js";
 import GameOver from "./GameOver.js";
-import Footer from "./Footer.js";
+
 
 
 import '../App.css';
@@ -33,7 +33,8 @@ function Game() {
     const [gameOver, setgameOver] = React.useState(false)
 
 
-
+    // Fetches data from Wikidata, passes the raw data into a separate function,
+    // and then updates 'countries' state
 
     React.useEffect(() => {
         axios.get(`https://query.wikidata.org/sparql?query=${query}`)
@@ -54,6 +55,8 @@ function Game() {
         }
     }, [lives])
 
+    // Handles the dnd functionality, checks if it was dropped in the correct place,
+    // removes the current card from the 'countries' state, updates the 'answers' & 'lives' states
 
     function handleOnDragEnd(result) {
         const draggedCountry = countries.find(country => country.id === result.source.droppableId)
@@ -180,7 +183,7 @@ function Game() {
                         </div>
                         
                     </div>}
-                    <Footer />
+                    
             </DragDropContext>
         </div>
     );

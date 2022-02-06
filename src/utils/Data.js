@@ -1,12 +1,9 @@
 import { nanoid } from "nanoid"
-const axios = require("axios")
 
-const query = `SELECT%20%3Fcity%20%3FcityLabel%20%3Fpopulation%20%3FcountryLabel%20%3Fphoto%0AWHERE%20%7B%0A%20%20%3Fcity%20wdt%3AP31%20wd%3AQ1637706%20.%0A%20%20%3Fcity%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcity%20wdt%3AP17%20%3Fcountry%20.%0A%20%20%3Fcity%20wdt%3AP18%20%3Fphoto%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20"en"%20%7D.%0A%20%20%20%20%20%20%20%20%7D`
-
+// Receives raw data from Game.js and sends back a new array of modified countries
 
 const getCountries = (rawData) => {
     const countries = []
-
 
     for (let i = 0; i < 42; i++) {
         let duplicateCheck = true;
@@ -17,15 +14,20 @@ const getCountries = (rawData) => {
                 countries.push(newCountry)
             }
         }
-        
     }
-
     return countries
 }
+
+// Checks if the particular country is already in the countries array, sends
+// back true / false
+
 function checkDuplicate(country, countries) {
     const isDuplicate = countries.some(c => country.name === c.name)
     return isDuplicate
 }
+
+// Creates and sends back country objects
+
 function createCountry(rawData){
     const rawCountry = rawData[getRandom()]
             const newCountry = {
@@ -39,6 +41,9 @@ function createCountry(rawData){
             }
     return newCountry
 }
+
+// Generates a random number, didn't really have to do it in a separate function
+// to be honest
 
 function getRandom() {
 

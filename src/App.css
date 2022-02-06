@@ -42,24 +42,26 @@
   
   display: flex;
   justify-content: center;
+  align-items:center;
   position: fixed;
   bottom : 0;
   left: 0;
   right: 0;
-  margin-bottom : 40px;
+  margin-bottom : 20px;
 }
 #score--game{
-  padding-left:50px;
-}
-.footer--element{
-  padding: 10px;
+  margin-left:50px;
 }
 
 #hearts{
   
-  padding-right: 50px;
-  margin-right: 50px;
-  margin-top:20px;
+  
+  margin-right: 100px;
+  
+}
+#wiki--img{
+  margin: 5px;
+  height:30px;
 }
 html{
   background-color: #272a32;
