@@ -39,7 +39,6 @@ function Game() {
     React.useEffect(() => {
         axios.get(`https://query.wikidata.org/sparql?query=${query}`)
             .then((res) => {
-                console.log("query sent")
                 const newCountryArray = getCountries([...res.data.results.bindings])
                 setCountries(newCountryArray)
             })
@@ -56,10 +55,10 @@ function Game() {
     }, [lives])
 
     // Handles the dnd functionality, checks if it was dropped in the correct place,
-    // removes the current card from the 'countries' state, updates the 'answers' & 'lives' states
+    // removes the current country from the 'countries' state, updates the 'answers' & 'lives' states
 
     function handleOnDragEnd(result) {
-        const draggedCountry = countries.find(country => country.id === result.source.droppableId)
+        const draggedCountry = countries.find(country => country.id === result.source.droppableId) 
         const newCountries = countries.filter(country => country.id !== result.source.droppableId)
         const newAnswers = answers;
         const target = result.destination.index;
@@ -79,7 +78,6 @@ function Game() {
         newAnswers.sort(function (a, b) {
             return a.population - b.population
         })
-        console.log(newAnswers)
 
     }
 
