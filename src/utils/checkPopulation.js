@@ -1,10 +1,16 @@
 
+// Compares the populations of countries
 
 const checkPopulation = (population, index, answers) => {
+
+  // case if it's the first country
 
   if (answers.length === 0) {
     return true;
   }
+
+  // case if it's the second country
+
   else if (answers.length === 1) {
     if (index === 0) {
       if (population < answers[0].population) {
@@ -24,6 +30,9 @@ const checkPopulation = (population, index, answers) => {
       }
     }
   }
+
+  // rest of the cases
+
   else {
     if (index === answers.length) {
 

@@ -11,10 +11,9 @@ import GameOver from "./GameOver.js";
 
 
 import '../App.css';
-import getCountries from "../utils/Data.js"
+import getCountries from "../utils/data.js"
 import checkPopulation from "../utils/checkPopulation.js";
 
-const query = `select%20%3Fcountry%20%3FcountryLabel%20%3Fpopulation%20%3Fflag%0AWHERE%7B%0A%20%20%3Fcountry%20wdt%3AP31%20wd%3AQ6256%20.%0A%20%20%3Fcountry%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcountry%20wdt%3AP41%20%3Fflag%20.%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%0A%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22en%22%20.%0A%20%20%20%20%7D%0A%7D`
 
 function Game() {
 
@@ -31,22 +30,32 @@ function Game() {
     const [highScore, sethighScore] = React.useState(0)
     const [lives, setLives] = React.useState(2)
     const [gameOver, setgameOver] = React.useState(false)
+    const [countriesLoaded , setcountriesLoaded ] = React.useState(false)
 
 
-    // Fetches data from Wikidata, passes the raw data into a separate function,
-    // and then updates 'countries' state
+    // Gets a new array of country objects and updates the 'countries' state
 
     React.useEffect(() => {
-        axios.get(`https://query.wikidata.org/sparql?query=${query}`)
-            .then((res) => {
-                const newCountryArray = getCountries([...res.data.results.bindings])
-                setCountries(newCountryArray)
-            })
+        setCountries(()=>{
+            const newCountries = getCountries();
+            return newCountries;
+        })        
         const newAnswers = []
         setAnswers(newAnswers)
         setLives(2)
+        
         if (score > highScore) { sethighScore(score) }
     }, [gameOver])
+
+    // Gives time for the API call to finish before rendering the components to avoid errors
+
+    React.useEffect(()=>{
+        setTimeout(()=>{
+            setcountriesLoaded(true)
+        },1500)        
+    },[gameOver])
+
+    // Sets 'gameOver' state to true if 'lives' reaches 0
 
     React.useEffect(() => {
         if (lives < 1) {
@@ -58,7 +67,7 @@ function Game() {
     // removes the current country from the 'countries' state, updates the 'answers' & 'lives' states
 
     function handleOnDragEnd(result) {
-        const draggedCountry = countries.find(country => country.id === result.source.droppableId) 
+        const draggedCountry = countries.find(country => country.id === result.source.droppableId)
         const newCountries = countries.filter(country => country.id !== result.source.droppableId)
         const newAnswers = answers;
         const target = result.destination.index;
@@ -92,6 +101,7 @@ function Game() {
 
                         <button className="start--button" onClick={() => {
                             setgameOver(false)
+                            setcountriesLoaded(false)
                             setScore(0)
                         }
                         }>PLAY AGAIN</button>
@@ -100,12 +110,13 @@ function Game() {
 
                 {!gameOver &&
                     <div id="game--container">
+                        
                         <Header score={score} lives={lives} />
                         <div id="top--card--container">
 
-
-                            <Droppable droppableId={countries[0].id}>
-
+                            
+                            {countriesLoaded && <Droppable droppableId={countries[0].id} >
+                            
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef} id="top--card--div">
 
@@ -135,7 +146,7 @@ function Game() {
                                     </div>
                                 )
                                 }
-                            </Droppable>
+                            </Droppable>}
                         </div>
 
                         <hr></hr>
@@ -179,9 +190,9 @@ function Game() {
                                 }
                             </Droppable>
                         </div>
-                        
+
                     </div>}
-                    
+
             </DragDropContext>
         </div>
     );
