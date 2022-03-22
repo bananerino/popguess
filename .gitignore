@@ -19,10 +19,10 @@
 .env.production.local
 
 # src/*
-# public/*
-# build/static/css/*.map
-# build/static/js/*.map
-# static.json 
+ public/*
+ build/static/css/*.map
+ build/static/js/*.map
+ static.json 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

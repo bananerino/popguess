@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -11,7 +10,7 @@ import GameOver from "./GameOver.js";
 
 
 import '../App.css';
-import getCountries from "../utils/data.js"
+import {getCountries} from "../utils/data.js"
 import checkPopulation from "../utils/checkPopulation.js";
 
 
@@ -30,30 +29,21 @@ function Game() {
     const [highScore, sethighScore] = React.useState(0)
     const [lives, setLives] = React.useState(2)
     const [gameOver, setgameOver] = React.useState(false)
-    const [countriesLoaded , setcountriesLoaded ] = React.useState(false)
+    
 
 
     // Gets a new array of country objects and updates the 'countries' state
 
-    React.useEffect(() => {
-        setCountries(()=>{
-            const newCountries = getCountries();
-            return newCountries;
-        })        
+    React.useEffect(()=>{
+        getCountries(setCountries)
         const newAnswers = []
         setAnswers(newAnswers)
         setLives(2)
-        
-        if (score > highScore) { sethighScore(score) }
-    }, [gameOver])
-
-    // Gives time for the API call to finish before rendering the components to avoid errors
-
-    React.useEffect(()=>{
-        setTimeout(()=>{
-            setcountriesLoaded(true)
-        },1500)        
+        if (score > highScore){ 
+            sethighScore(score)
+        }
     },[gameOver])
+
 
     // Sets 'gameOver' state to true if 'lives' reaches 0
 
@@ -101,7 +91,6 @@ function Game() {
 
                         <button className="start--button" onClick={() => {
                             setgameOver(false)
-                            setcountriesLoaded(false)
                             setScore(0)
                         }
                         }>PLAY AGAIN</button>
@@ -115,7 +104,7 @@ function Game() {
                         <div id="top--card--container">
 
                             
-                            {countriesLoaded && <Droppable droppableId={countries[0].id} >
+                            <Droppable droppableId={countries[0].id} >
                             
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef} id="top--card--div">
@@ -146,7 +135,7 @@ function Game() {
                                     </div>
                                 )
                                 }
-                            </Droppable>}
+                            </Droppable>
                         </div>
 
                         <hr></hr>
@@ -159,7 +148,7 @@ function Game() {
                                     <ul {...provided.droppableProps} ref={provided.innerRef} className="list-group list-group-horizontal">
                                         {answers.map((country, index) => {
                                             return (
-                                                <Draggable key={country.id} draggableId={`${country.id}asda`} index={index}>
+                                                <Draggable key={country.id} draggableId={`${country.id}`} index={index}>
                                                     {(provided) => {
                                                         return (
                                                             <li key={country.id} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="list-group-item p-0 mx-2 bg-transparent border-0">

@@ -5,22 +5,16 @@ const axios = require("axios")
 const query = `select%20%3Fcountry%20%3FcountryLabel%20%3Fpopulation%20%3Fflag%0AWHERE%7B%0A%20%20%3Fcountry%20wdt%3AP31%20wd%3AQ6256%20.%0A%20%20%3Fcountry%20wdt%3AP1082%20%3Fpopulation%20.%0A%20%20%3Fcountry%20wdt%3AP41%20%3Fflag%20.%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%0A%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22en%22%20.%0A%20%20%20%20%7D%0A%7D`
 
 
-// Receives raw data from Wikidata, passes it to generateCountryArray and sends back a new array
-// of country objects
+// Makes an API call to Wikidata, passes raw array to generateCountryArray, and
+// sets the 'countries' state to the formatted array received
 
-const getCountries = () => {
-    const countries = []
+export function getCountries(setCountries){
 
     axios.get(`https://query.wikidata.org/sparql?query=${query}`)
         .then((res) => {
             const countryData = [...res.data.results.bindings]
-            const countryArray = generateCountryArray(countryData)
-            countries.push(...countryArray)
-            
+            setCountries(generateCountryArray(countryData))
         })
-
-
-    return countries
 }
 
 // Receives an array of raw data, creates & returns a new array of formatted country objects
@@ -77,5 +71,3 @@ function getRandom() {
     return random
 }
 
-
-export default getCountries;
