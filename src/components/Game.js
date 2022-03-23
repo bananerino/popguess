@@ -1,17 +1,19 @@
 import React from "react";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 
 
-import Card from "./Card.js";
+import TopCard from "./TopCard.js";
 import Header from "./Header.js";
 import GameOver from "./GameOver.js";
+import AnswerReel from "./AnswerReel.js";
 
 
 
 import '../App.css';
 import {getCountries} from "../utils/data.js"
 import checkPopulation from "../utils/checkPopulation.js";
+
 
 
 function Game() {
@@ -86,99 +88,23 @@ function Game() {
             <DragDropContext onDragEnd={handleOnDragEnd}>
 
                 {gameOver &&
-                    <div id="gameover--screen">
-                        <GameOver score={score} highScore={highScore} />
-
-                        <button className="start--button" onClick={() => {
-                            setgameOver(false)
-                            setScore(0)
-                        }
-                        }>PLAY AGAIN</button>
-                    </div>
+                    
+                        <GameOver score={score} highScore={highScore}
+                                  setgameOver={()=>setgameOver(false)}
+                                  setScore={()=>setScore(0)}  />
+                   
                 }
 
                 {!gameOver &&
                     <div id="game--container">
                         
                         <Header score={score} lives={lives} />
-                        <div id="top--card--container">
-
-                            
-                            <Droppable droppableId={countries[0].id} >
-                            
-                                {(provided) => (
-                                    <div {...provided.droppableProps} ref={provided.innerRef} id="top--card--div">
-
-
-                                        <Draggable key={countries[0].id} draggableId={countries[0].id} >
-                                            {(provided) => {
-                                                return (
-                                                    <div key={countries[0].id} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                        <Card
-                                                            name={countries[0].name}
-                                                            correctGuess={countries[0].correctGuess}
-                                                            key={countries[0].id}
-                                                            id={countries[0].id}
-                                                            flag={countries[0].flag}
-                                                            population={countries[0].population}
-
-                                                        />
-                                                    </div>
-
-                                                )
-                                            }
-                                            }
-                                        </Draggable>
-
-
-                                        {provided.placeholder}
-                                    </div>
-                                )
-                                }
-                            </Droppable>
-                        </div>
+                        
+                        <TopCard country={countries[0]} />
 
                         <hr></hr>
-                        <div id="answers--container">
-                            <Droppable droppableId="answers" direction="horizontal">
 
-
-                                {(provided) => (
-
-                                    <ul {...provided.droppableProps} ref={provided.innerRef} className="list-group list-group-horizontal">
-                                        {answers.map((country, index) => {
-                                            return (
-                                                <Draggable key={country.id} draggableId={`${country.id}`} index={index}>
-                                                    {(provided) => {
-                                                        return (
-                                                            <li key={country.id} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="list-group-item p-0 mx-2 bg-transparent border-0">
-
-                                                                <Card
-                                                                    name={country.name}
-
-                                                                    key={country.id}
-                                                                    id={country.id}
-                                                                    flag={country.flag}
-                                                                    population={country.population}
-                                                                    correctGuess={country.correctGuess}
-                                                                />
-
-
-                                                            </li>
-
-                                                        )
-                                                    }
-                                                    }
-                                                </Draggable>
-                                            )
-                                        })}
-                                        {provided.placeholder}
-                                    </ul>
-
-                                )
-                                }
-                            </Droppable>
-                        </div>
+                        <AnswerReel answers={answers} />
 
                     </div>}
 
