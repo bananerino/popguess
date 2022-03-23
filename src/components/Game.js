@@ -11,7 +11,7 @@ import AnswerReel from "./AnswerReel.js";
 
 
 import '../App.css';
-import {getCountries} from "../utils/data.js"
+import { getCountries } from "../utils/data.js"
 import checkPopulation from "../utils/checkPopulation.js";
 
 
@@ -31,20 +31,20 @@ function Game() {
     const [highScore, sethighScore] = React.useState(0)
     const [lives, setLives] = React.useState(2)
     const [gameOver, setgameOver] = React.useState(false)
-    
+
 
 
     // Gets a new array of country objects and updates the 'countries' state
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         getCountries(setCountries)
         const newAnswers = []
         setAnswers(newAnswers)
         setLives(2)
-        if (score > highScore){ 
+        if (score > highScore) {
             sethighScore(score)
         }
-    },[gameOver])
+    }, [gameOver])
 
 
     // Sets 'gameOver' state to true if 'lives' reaches 0
@@ -88,18 +88,18 @@ function Game() {
             <DragDropContext onDragEnd={handleOnDragEnd}>
 
                 {gameOver &&
-                    
-                        <GameOver score={score} highScore={highScore}
-                                  setgameOver={()=>setgameOver(false)}
-                                  setScore={()=>setScore(0)}  />
-                   
+
+                    <GameOver score={score} highScore={highScore}
+                        setgameOver={() => setgameOver(false)}
+                        setScore={() => setScore(0)} />
+
                 }
 
                 {!gameOver &&
                     <div id="game--container">
-                        
+
                         <Header score={score} lives={lives} />
-                        
+
                         <TopCard country={countries[0]} />
 
                         <hr></hr>
